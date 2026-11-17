@@ -1,0 +1,315 @@
+% ============================================================
+%  INFORME – PROYECTO FINAL 2
+%  CS2023 – Algoritmos y Estructuras de Datos  |  UTEC 2026-2
+%  Tema: Diámetro de un árbol
+%
+%  INSTRUCCIONES: Pega este contenido en un archivo .tex
+%  y compila con:  pdflatex informe.tex
+% ============================================================
+
+\documentclass[12pt,a4paper]{article}
+
+% ── Paquetes ─────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{graphs, graphdrawing, quotes}
+\usegdlibrary{trees}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% ── Estilo de código ──────────────────────────────────────────
+\lstset{
+    language=C++,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{red!70!black},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!8},
+    tabsize=4,
+    showstringspaces=false
+}
+
+% ── Encabezado y pie ──────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small CS2023 -- Algoritmos y Estructuras de Datos}
+\rhead{\small UTEC 2026-2}
+\cfoot{\thepage}
+
+% ── Colores personalizados ───────────────────────────────────
+\definecolor{utecblue}{RGB}{0,70,127}
+
+% ── Formato de secciones ─────────────────────────────────────
+\titleformat{\section}{\large\bfseries\color{utecblue}}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+% ════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── CARÁTULA ─────────────────────────────────────────────────
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+
+    % Logo UTEC (si tienes el archivo logo_utec.png, descomenta)
+    % \includegraphics[width=0.25\textwidth]{logo_utec.png}\\[1cm]
+
+    {\large \textbf{Universidad de Ingeniería y Tecnología -- UTEC}}\\[0.3cm]
+    {\large CS2023 -- Algoritmos y Estructuras de Datos}\\[0.3cm]
+    {\large 2026-2}\\[2cm]
+
+    \rule{\linewidth}{1.5pt}\\[0.5cm]
+    {\Huge \bfseries \color{utecblue} Diámetro de un Árbol}\\[0.3cm]
+    {\large Proyecto Final 2 -- Anima tu Algoritmo}\\
+    \rule{\linewidth}{1.5pt}\\[2cm]
+
+    % ── COMPLETA LOS INTEGRANTES ──────────────────────────────
+    {\large \textbf{Integrantes:}}\\[0.5cm]
+    \begin{tabular}{ll}
+        % Nombre completo              & Código de alumno \\
+        % \hline
+        Eduardo [APELLIDO]             & [CÓDIGO] \\
+        % Integrante 2                 & [CÓDIGO] \\
+        % Integrante 3                 & [CÓDIGO] \\
+    \end{tabular}\\[2cm]
+
+    {\large \textbf{Docente:} Prof. Víctor Rascó Galván Oyola}\\[0.5cm]
+    {\large \today}
+
+    \vfill
+    {\small Repositorio GitHub: \url{https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol}}
+\end{titlepage}
+
+% ── ÍNDICE ───────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ════════════════════════════════════════════════════════════
+\section{Descripción del Algoritmo}
+
+\subsection{¿Qué es el diámetro de un árbol?}
+
+El \textbf{diámetro de un árbol} es la longitud del camino más largo entre cualquier par de nodos del árbol. Esta longitud puede medirse de dos formas:
+
+\begin{itemize}
+    \item \textbf{Árbol no ponderado:} número de aristas del camino más largo.
+    \item \textbf{Árbol ponderado:} suma de los pesos de las aristas del camino más largo.
+\end{itemize}
+
+Formalmente, dado un árbol $T = (V, E)$, el diámetro $D$ se define como:
+\[
+    D = \max_{u, v \in V} \; d(u, v)
+\]
+donde $d(u, v)$ es la distancia (número de aristas o suma de pesos) entre los nodos $u$ y $v$.
+
+\subsection{Algoritmo: dos recorridos BFS}
+
+El algoritmo clásico para encontrar el diámetro en tiempo $O(n)$ consta de dos fases:
+
+\begin{enumerate}
+    \item \textbf{BFS 1:} Desde cualquier nodo arbitrario (p.\,ej. el nodo $0$), realizar un BFS y encontrar el nodo más lejano $a$.
+    \item \textbf{BFS 2:} Desde el nodo $a$, realizar otro BFS y encontrar el nodo más lejano $b$.
+    \item El camino $a \to b$ es el diámetro del árbol, con longitud $d(a, b)$.
+\end{enumerate}
+
+\textbf{Correctitud (sketch):} Se puede demostrar que el nodo más lejano desde cualquier nodo es siempre uno de los extremos del diámetro. Luego, el nodo más lejano desde ese extremo da el otro extremo.
+
+\subsection{Ejemplo ilustrativo}
+
+Considérese el siguiente árbol (no ponderado, $n = 6$):
+
+\begin{center}
+\begin{tikzpicture}[every node/.style={circle, draw, minimum size=7mm}]
+    \node (0) at (0,0)   {0};
+    \node (1) at (1.5,0) {1};
+    \node (2) at (3,0)   {2};
+    \node (3) at (4.5,0) {3};
+    \node (4) at (6,0)   {4};
+    \node (5) at (7.5,0) {5};
+    \draw (0)--(1)--(2)--(3)--(4)--(5);
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+    \item BFS 1 desde nodo $0$: nodo más lejano $\Rightarrow a = 5$.
+    \item BFS 2 desde nodo $5$: nodo más lejano $\Rightarrow b = 0$.
+    \item Diámetro $= d(5, 0) = 5$ aristas.
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════
+\section{Implementación}
+
+\subsection{Lenguaje y herramientas}
+
+\begin{itemize}
+    \item \textbf{Lenguaje:} C++17
+    \item \textbf{Visualización:} Interfaz de terminal con colores ANSI (sin dependencias externas)
+    \item \textbf{Compilador:} \texttt{g++} con flag \texttt{-std=c++17}
+\end{itemize}
+
+\subsection{Estructura del código}
+
+\begin{description}
+    \item[\texttt{src/tree\_diameter.h}] Header-only con la estructura \texttt{TreeDiameter}: almacena el grafo, implementa los dos BFS y registra cada paso para la animación.
+    \item[\texttt{src/main.cpp}] Interfaz visual interactiva: selección de caso de prueba, velocidad de animación, renderizado en terminal con colores.
+\end{description}
+
+\subsection{Fragmento principal del algoritmo}
+
+\begin{lstlisting}[caption={Dos BFS para calcular el diámetro (tree\_diameter.h)}]
+// BFS desde 'start', retorna nodo mas lejano, distancias y padres
+std::tuple<int, std::vector<int>, std::vector<int>>
+bfs(int start, const std::string& phase) {
+    std::vector<int> dist(n, -1), parent(n, -1);
+    std::queue<int> q;
+    dist[start] = 0;
+    q.push(start);
+    int farthest = start;
+
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        for (auto [v, w] : adj[u]) {
+            if (dist[v] == -1) {
+                dist[v]   = dist[u] + w;
+                parent[v] = u;
+                q.push(v);
+                if (dist[v] > dist[farthest]) farthest = v;
+            }
+        }
+    }
+    return {farthest, dist, parent};
+}
+
+// Calcula el diametro con dos BFS
+auto computeDiameter() {
+    auto [a, d1, p1] = bfs(0, "BFS1");   // BFS 1
+    auto [b, d2, p2] = bfs(a, "BFS2");   // BFS 2
+    int diameter = d2[b];
+    auto path = reconstructPath(a, b, p2);
+    return std::make_tuple(diameter, a, b, path);
+}
+\end{lstlisting}
+
+% ════════════════════════════════════════════════════════════
+\section{Pasos para reproducir el video}
+
+\begin{enumerate}
+    \item Clonar el repositorio:
+    \begin{lstlisting}[language=bash]
+git clone https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol.git
+cd Proyecto2_AED_Diametro_de_arbol
+    \end{lstlisting}
+
+    \item Compilar:
+    \begin{lstlisting}[language=bash]
+cd src
+g++ -std=c++17 -O2 -o visualizer main.cpp
+    \end{lstlisting}
+
+    \item Ejecutar y seleccionar caso de prueba:
+    \begin{lstlisting}[language=bash]
+./visualizer
+    \end{lstlisting}
+
+    \item Usar OBS (u otro software de grabación) para capturar la terminal mientras se ejecuta el programa, agregando narración en voz en off.
+\end{enumerate}
+
+% ════════════════════════════════════════════════════════════
+\section{Análisis de Complejidad}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Operación}                    & \textbf{Tiempo} & \textbf{Espacio} \\
+\midrule
+BFS 1 (desde nodo 0)                  & $O(n)$          & $O(n)$           \\
+BFS 2 (desde nodo $a$)                & $O(n)$          & $O(n)$           \\
+Reconstrucción del camino             & $O(n)$          & $O(n)$           \\
+\midrule
+\textbf{Total}                        & $O(n)$          & $O(n)$           \\
+\bottomrule
+\end{tabular}
+\caption{Complejidad del algoritmo de diámetro mediante dos BFS.}
+\end{table}
+
+donde $n = |V|$ es el número de nodos del árbol.
+
+\textbf{Justificación:} Cada BFS visita cada nodo y arista exactamente una vez, lo que resulta en $O(|V| + |E|) = O(n)$ para árboles (ya que $|E| = n - 1$). La reconstrucción del camino recorre el arreglo de padres en $O(n)$.
+
+\subsection{Casos borde}
+
+\begin{itemize}
+    \item \textbf{Árbol trivial ($n = 1$):} El diámetro es $0$ (un solo nodo, ningún camino).
+    \item \textbf{Dos nodos ($n = 2$):} El diámetro es el peso de la única arista.
+    \item \textbf{Árbol lineal (cadena):} El diámetro equivale a $n - 1$ aristas (peor caso para árbol no ponderado).
+    \item \textbf{Árbol estrella:} El diámetro es $2$ (cualquier camino hoja–raíz–hoja).
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════
+\section{Contribuciones de cada integrante}
+
+% ── COMPLETA ESTA SECCIÓN CON LAS CONTRIBUCIONES REALES ──────
+\begin{itemize}
+    \item \textbf{Eduardo:} Implementación del algoritmo (\texttt{tree\_diameter.h}), interfaz visual en terminal (\texttt{main.cpp}), README, configuración del repositorio GitHub, grabación del video.
+    % \item \textbf{Integrante 2:} ...
+    % \item \textbf{Integrante 3:} ...
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════
+\section{Evidencia}
+
+\begin{itemize}
+    \item \textbf{Repositorio GitHub:}\\
+    \url{https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol}
+
+    \item \textbf{Video (enlace):}\\
+    % Agrega el enlace a YouTube no listado o Drive aquí
+    \textit{[COMPLETAR ENLACE AL VIDEO]}
+
+    % Si tienes capturas de pantalla, descomenta y adapta:
+    % \begin{figure}[h!]
+    %     \centering
+    %     \includegraphics[width=0.85\textwidth]{captura_bfs1.png}
+    %     \caption{Interfaz durante el BFS 1 – nodo actual resaltado en azul.}
+    % \end{figure}
+\end{itemize}
+
+% ════════════════════════════════════════════════════════════
+\section{Conclusiones}
+
+\begin{enumerate}
+    \item El algoritmo de diámetro mediante dos BFS es sorprendentemente simple pero matemáticamente elegante: aprovecha la propiedad de que el nodo más lejano desde cualquier nodo es siempre un extremo del diámetro, logrando resolver el problema en tiempo lineal $O(n)$ sin necesidad de calcular todas las distancias por pares (que tomaría $O(n^2)$).
+
+    \item La visualización paso a paso en terminal permite comprender intuitivamente cómo los dos recorridos BFS convergen hacia los extremos del diámetro, haciendo evidente que la información local de cada BFS es suficiente para determinar el camino global más largo del árbol.
+
+    % Puedes agregar más conclusiones:
+    % \item ...
+\end{enumerate}
+
+% ════════════════════════════════════════════════════════════
+\section*{Referencias}
+
+\begin{itemize}
+    \item Cormen, T. H., Leiserson, C. E., Rivest, R. L., \& Stein, C. (2009). \textit{Introduction to Algorithms} (3rd ed.). MIT Press.
+    \item CP-Algorithms. \textit{Tree Diameter}. \url{https://cp-algorithms.com/graph/diameter-of-a-tree.html}
+    \item 3Blue1Brown. \url{https://www.3blue1brown.com/}
+\end{itemize}
+
+\end{document}
