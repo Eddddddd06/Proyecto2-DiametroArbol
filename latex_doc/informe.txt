@@ -1,315 +1,472 @@
 % ============================================================
 %  INFORME – PROYECTO FINAL 2
 %  CS2023 – Algoritmos y Estructuras de Datos  |  UTEC 2026-2
-%  Tema: Diámetro de un árbol
+%  Tema: Diámetro de un Árbol  (Doble BFS en O(n))
 %
-%  INSTRUCCIONES: Pega este contenido en un archivo .tex
-%  y compila con:  pdflatex informe.tex
+%  Archivo: latex_doc/informe.txt
+%  Pegar en un archivo .tex y compilar con:  pdflatex informe.tex
 % ============================================================
 
 \documentclass[12pt,a4paper]{article}
 
-% ── Paquetes ─────────────────────────────────────────────────
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
 \geometry{margin=2.5cm}
-
 \usepackage{graphicx}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath,amssymb}
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{tikz}
-\usetikzlibrary{graphs, graphdrawing, quotes}
-\usegdlibrary{trees}
 \usepackage{booktabs}
+\usepackage{tabularx}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
+\usepackage{array}
 
-% ── Estilo de código ──────────────────────────────────────────
+% ── Estilo de código C++ ──────────────────────────────────────
 \lstset{
-    language=C++,
-    basicstyle=\ttfamily\footnotesize,
-    keywordstyle=\color{blue}\bfseries,
-    commentstyle=\color{gray}\itshape,
-    stringstyle=\color{red!70!black},
-    numbers=left,
-    numberstyle=\tiny\color{gray},
-    breaklines=true,
-    frame=single,
-    backgroundcolor=\color{gray!8},
-    tabsize=4,
-    showstringspaces=false
+  language=C++,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red!70!black},
+  numbers=left, numberstyle=\tiny\color{gray},
+  breaklines=true, frame=single,
+  backgroundcolor=\color{gray!8},
+  tabsize=4, showstringspaces=false
 }
 
-% ── Encabezado y pie ──────────────────────────────────────────
+% ── Encabezado ────────────────────────────────────────────────
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{\small CS2023 -- Algoritmos y Estructuras de Datos}
 \rhead{\small UTEC 2026-2}
 \cfoot{\thepage}
 
-% ── Colores personalizados ───────────────────────────────────
 \definecolor{utecblue}{RGB}{0,70,127}
-
-% ── Formato de secciones ─────────────────────────────────────
 \titleformat{\section}{\large\bfseries\color{utecblue}}{}{0em}{}[\titlerule]
 \titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
 
-% ════════════════════════════════════════════════════════════
+% ═══════════════════════════════════════════════════════════════
 \begin{document}
 
 % ── CARÁTULA ─────────────────────────────────────────────────
 \begin{titlepage}
-    \centering
-    \vspace*{1cm}
+  \centering
+  \vspace*{1cm}
+  % \includegraphics[width=0.22\textwidth]{logo_utec.png}\\[0.8cm]
+  {\large\textbf{Universidad de Ingeniería y Tecnología -- UTEC}}\\[0.3cm]
+  {\large CS2023 -- Algoritmos y Estructuras de Datos}\\[0.2cm]
+  {\large 2026-2}\\[1.6cm]
 
-    % Logo UTEC (si tienes el archivo logo_utec.png, descomenta)
-    % \includegraphics[width=0.25\textwidth]{logo_utec.png}\\[1cm]
+  \rule{\linewidth}{1.5pt}\\[0.4cm]
+  {\Huge\bfseries\color{utecblue} Diámetro de un Árbol}\\[0.3cm]
+  {\large Proyecto Final 2 -- Anima tu Algoritmo o Estructura de Datos}\\[0.2cm]
+  {\large Algoritmo de Doble BFS en $O(n)$}\\
+  \rule{\linewidth}{1.5pt}\\[1.8cm]
 
-    {\large \textbf{Universidad de Ingeniería y Tecnología -- UTEC}}\\[0.3cm]
-    {\large CS2023 -- Algoritmos y Estructuras de Datos}\\[0.3cm]
-    {\large 2026-2}\\[2cm]
+  {\large\textbf{Integrantes del Grupo:}}\\[0.4cm]
+  \begin{tabular}{ll}
+    % COMPLETA CON TU NOMBRE Y CÓDIGO
+    Eduardo [APELLIDO]  & [CÓDIGO] \\
+    % [INTEGRANTE 2]      & [CÓDIGO] \\
+    % [INTEGRANTE 3]      & [CÓDIGO] \\
+  \end{tabular}\\[1.8cm]
 
-    \rule{\linewidth}{1.5pt}\\[0.5cm]
-    {\Huge \bfseries \color{utecblue} Diámetro de un Árbol}\\[0.3cm]
-    {\large Proyecto Final 2 -- Anima tu Algoritmo}\\
-    \rule{\linewidth}{1.5pt}\\[2cm]
-
-    % ── COMPLETA LOS INTEGRANTES ──────────────────────────────
-    {\large \textbf{Integrantes:}}\\[0.5cm]
-    \begin{tabular}{ll}
-        % Nombre completo              & Código de alumno \\
-        % \hline
-        Eduardo [APELLIDO]             & [CÓDIGO] \\
-        % Integrante 2                 & [CÓDIGO] \\
-        % Integrante 3                 & [CÓDIGO] \\
-    \end{tabular}\\[2cm]
-
-    {\large \textbf{Docente:} Prof. Víctor Rascó Galván Oyola}\\[0.5cm]
-    {\large \today}
-
-    \vfill
-    {\small Repositorio GitHub: \url{https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol}}
+  {\large\textbf{Docente:} Prof. Víctor Racsó Galván Oyola}\\[0.4cm]
+  {\large\today}
+  \vfill
+  {\small Repositorio:
+    \url{https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol}}
 \end{titlepage}
 
-% ── ÍNDICE ───────────────────────────────────────────────────
-\tableofcontents
-\newpage
+\tableofcontents\newpage
 
-% ════════════════════════════════════════════════════════════
-\section{Descripción del Algoritmo}
+% ═══════════════════════════════════════════════════════════════
+\section{Descripción del Algoritmo y Demostración Conceptual}
 
-\subsection{¿Qué es el diámetro de un árbol?}
+\subsection{Definición formal del Diámetro de un Árbol}
 
-El \textbf{diámetro de un árbol} es la longitud del camino más largo entre cualquier par de nodos del árbol. Esta longitud puede medirse de dos formas:
-
+Dado un árbol conexo y acíclico $T=(V,E)$, el \textbf{diámetro} se define como:
+\[
+  D(T) \;=\; \max_{u,\,v\;\in\; V}\; d(u,v)
+\]
+donde $d(u,v)$ es la longitud del único camino simple entre $u$ y $v$.
+La longitud se mide según el contexto:
 \begin{itemize}
-    \item \textbf{Árbol no ponderado:} número de aristas del camino más largo.
-    \item \textbf{Árbol ponderado:} suma de los pesos de las aristas del camino más largo.
+  \item \textbf{No ponderado:} número de aristas del camino.
+  \item \textbf{Ponderado:} suma de los pesos de las aristas del camino.
 \end{itemize}
 
-Formalmente, dado un árbol $T = (V, E)$, el diámetro $D$ se define como:
-\[
-    D = \max_{u, v \in V} \; d(u, v)
-\]
-donde $d(u, v)$ es la distancia (número de aristas o suma de pesos) entre los nodos $u$ y $v$.
+\subsection{Algoritmo de Doble Recorrido (Dos BFS) en $O(n)$}
 
-\subsection{Algoritmo: dos recorridos BFS}
-
-El algoritmo clásico para encontrar el diámetro en tiempo $O(n)$ consta de dos fases:
+El algoritmo consta de tres fases:
 
 \begin{enumerate}
-    \item \textbf{BFS 1:} Desde cualquier nodo arbitrario (p.\,ej. el nodo $0$), realizar un BFS y encontrar el nodo más lejano $a$.
-    \item \textbf{BFS 2:} Desde el nodo $a$, realizar otro BFS y encontrar el nodo más lejano $b$.
-    \item El camino $a \to b$ es el diámetro del árbol, con longitud $d(a, b)$.
+  \item \textbf{Fase 1 — Primer BFS:} Desde un nodo arbitrario $X$ (el usuario
+        puede elegirlo con un clic en la interfaz), ejecutar un BFS.
+        Al vaciarse la cola, el nodo más lejano hallado se denomina
+        \textbf{Extremo~A}.
+
+  \item \textbf{Fase 2 — Segundo BFS:} Reiniciar todos los arreglos
+        (\texttt{dist[]}, \texttt{parent[]}) y ejecutar un nuevo BFS desde
+        el Extremo~A. El nodo más lejano ahora hallado es el
+        \textbf{Extremo~B}. El arreglo \texttt{parent[]} registra los
+        predecesores para reconstruir el camino exacto.
+
+  \item \textbf{Reconstrucción animada:} Seguir los punteros
+        \texttt{parent[B], parent[parent[B]], \ldots} hasta llegar a~A,
+        iluminando cada arista del camino en la interfaz.
 \end{enumerate}
 
-\textbf{Correctitud (sketch):} Se puede demostrar que el nodo más lejano desde cualquier nodo es siempre uno de los extremos del diámetro. Luego, el nodo más lejano desde ese extremo da el otro extremo.
+\subsection{Justificación teórica}
 
-\subsection{Ejemplo ilustrativo}
+\begin{quote}
+\textit{Lema:} En cualquier árbol, el nodo más lejano desde cualquier
+nodo $X$ es siempre uno de los extremos del diámetro.
+\end{quote}
 
-Considérese el siguiente árbol (no ponderado, $n = 6$):
+\noindent\textbf{Demostración informal:} Sea $P^* = (a^*, b^*)$ el diámetro real.
+Supongamos que el BFS desde $X$ halla el nodo más lejano $A \neq a^*$.
+Entonces $d(X, A) \geq d(X, a^*)$.  Por la desigualdad triangular en árboles
+(que son métricas de árbol) se puede demostrar que el camino más largo desde $A$
+es al menos tan largo como el diámetro $d(a^*, b^*)$.
+Por tanto el Segundo BFS desde $A$ siempre encuentra el diámetro real $D$.
 
-\begin{center}
-\begin{tikzpicture}[every node/.style={circle, draw, minimum size=7mm}]
-    \node (0) at (0,0)   {0};
-    \node (1) at (1.5,0) {1};
-    \node (2) at (3,0)   {2};
-    \node (3) at (4.5,0) {3};
-    \node (4) at (6,0)   {4};
-    \node (5) at (7.5,0) {5};
-    \draw (0)--(1)--(2)--(3)--(4)--(5);
-\end{tikzpicture}
-\end{center}
+\subsection{Casos borde implementados en la aplicación}
+
+\begin{enumerate}
+  \item \textbf{Árbol vacío ($n=0$):} La aplicación detecta $n=0$ antes de
+        lanzar cualquier BFS, muestra el mensaje
+        \emph{"Árbol Vacío (N = 0)"} y retorna diámetro~0 sin crashear.
+
+  \item \textbf{Un solo nodo ($n=1$):} BFS~1 inicia y termina en $v_0$;
+        $A = B = v_0$; diámetro~0.
+
+  \item \textbf{Árbol lineal degenerado ($n=6$):}  Cadena
+        $v_0\!-\!v_1\!-\!\cdots\!-\!v_5$.  El BFS~1 (desde $v_2$) llega a
+        $v_5$; el BFS~2 recorre toda la cadena hasta $v_0$;
+        diámetro~$= n-1 = 5$ (peor caso).
+
+  \item \textbf{Árbol estrella ($n=7$):} Nodo central $v_0$ conectado a
+        $v_1,\ldots,v_6$.  Independientemente del nodo inicial, el
+        diámetro siempre es~2 (cualquier par de hojas).
+\end{enumerate}
+
+% ═══════════════════════════════════════════════════════════════
+\section{Herramientas, Arquitectura y Pasos para Reproducir el Video}
+
+\subsection{Herramientas utilizadas}
 
 \begin{itemize}
-    \item BFS 1 desde nodo $0$: nodo más lejano $\Rightarrow a = 5$.
-    \item BFS 2 desde nodo $5$: nodo más lejano $\Rightarrow b = 0$.
-    \item Diámetro $= d(5, 0) = 5$ aristas.
+  \item \textbf{Lenguaje:} C++17
+  \item \textbf{Librería gráfica:} Raylib 5.0
+        (\url{https://www.raylib.com/}) — ventana nativa 1280×720, 60~FPS,
+        antialiasing MSAA~4×, colores RGBA, shapes 2D, fuentes TTF.
+  \item \textbf{Sistema de compilación:} CMake~3.16+ ó g++ directo.
+  \item \textbf{Captura de video:} OBS Studio — captura de ventana de
+        escritorio, exportación MP4 (H.264, 1280×720 ó 1920×1080).
+  \item \textbf{Sistema operativo:} Linux (Arch / EndeavourOS / Ubuntu).
 \end{itemize}
 
-% ════════════════════════════════════════════════════════════
-\section{Implementación}
-
-\subsection{Lenguaje y herramientas}
-
-\begin{itemize}
-    \item \textbf{Lenguaje:} C++17
-    \item \textbf{Visualización:} Interfaz de terminal con colores ANSI (sin dependencias externas)
-    \item \textbf{Compilador:} \texttt{g++} con flag \texttt{-std=c++17}
-\end{itemize}
-
-\subsection{Estructura del código}
+\subsection{Arquitectura del código (clases y archivos reales)}
 
 \begin{description}
-    \item[\texttt{src/tree\_diameter.h}] Header-only con la estructura \texttt{TreeDiameter}: almacena el grafo, implementa los dos BFS y registra cada paso para la animación.
-    \item[\texttt{src/main.cpp}] Interfaz visual interactiva: selección de caso de prueba, velocidad de animación, renderizado en terminal con colores.
+  \item[\texttt{Tree.hpp}]
+    Define los \textbf{enums de estado visual}
+    (\texttt{NodeState}, \texttt{EdgeState}, \texttt{BFSPhase},
+    \texttt{StepType}),
+    la \textbf{estructura} \texttt{AlgoStep} (micro-paso de animación con
+    \texttt{queueState}, \texttt{distArr[]}, \texttt{parentArr[]},
+    \texttt{nodeStates[]}, \texttt{edgeStates[]}, \texttt{description}),
+    y la \textbf{clase} \texttt{Tree} con la lista de adyacencia propia
+    (\texttt{std::vector<std::vector<TreeEdge>>}) y los métodos
+    \texttt{addEdge()}, \texttt{computeSteps()}, \texttt{extractResult()}.
+
+  \item[\texttt{Tree.cpp}]
+    Implementa el Doble BFS real.
+    El método privado \texttt{runBFS(start, phase, steps)} graba un
+    \texttt{AlgoStep} por cada evento:
+    \texttt{BFS\_INIT}, \texttt{BFS\_DEQUEUE}, \texttt{BFS\_ENQUEUE},
+    \texttt{BFS\_SKIP}, \texttt{BFS\_DONE}.
+    Luego \texttt{computeSteps()} orquesta los dos BFS y añade los pasos
+    \texttt{RECONSTRUCT} (uno por arista del diámetro) y \texttt{ALGO\_DONE}.
+
+  \item[\texttt{Visualizer.hpp}]
+    Declara la \textbf{paleta} \texttt{namespace Pal} (funciones inline
+    que retornan \texttt{Color}),
+    el \textbf{layout} \texttt{namespace Lay} (constantes de píxeles),
+    los \textbf{structs} \texttt{UIBtn}, \texttt{NodeVis}, \texttt{EdgeVis},
+    y la \textbf{clase} \texttt{Visualizer} con toda la interfaz pública
+    (\texttt{init()}, \texttt{update()}, \texttt{draw()},
+    \texttt{shouldClose()}).
+
+  \item[\texttt{Visualizer.cpp}]
+    $\approx$1300 líneas.  Implementa el renderizado completo:
+    \begin{itemize}
+      \item \texttt{computeNodeLayout()} — layout automático jerárquico,
+            horizontal (cadena) o radial (estrella).
+      \item \texttt{goToStep(idx)} — aplica el estado del paso
+            \texttt{AlgoStep[idx]} a los arrays \texttt{nodeVis[]}
+            y \texttt{edgeVis[]} con interpolación de color (lerp).
+      \item \texttt{drawSingleNode(i)} — círculo con pulso sinusoidal,
+            etiqueta \texttt{v\{i\}}, pastilla de distancia \texttt{d=X}.
+      \item \texttt{drawSingleEdge(i)} — línea con grosor extra y halo
+            verde para el camino del diámetro.
+      \item \texttt{drawQueuePanel()}, \texttt{drawDistTable()},
+            \texttt{drawSummaryCards()}, \texttt{drawLegend()}.
+      \item \texttt{drawTabIntro()} — pestaña F1 completa.
+      \item \texttt{drawTabComplexity()} — pestaña F4 con barras
+            comparativas O($n^2$) vs O($n$).
+    \end{itemize}
+
+  \item[\texttt{main.cpp}]
+    Inicializa la ventana Raylib con
+    \texttt{FLAG\_WINDOW\_RESIZABLE | FLAG\_MSAA\_4X\_HINT},
+    instancia \texttt{Visualizer} y corre el bucle principal
+    (\texttt{update()} + \texttt{draw()}).
 \end{description}
 
-\subsection{Fragmento principal del algoritmo}
+\subsection{Animación real, no simulada}
 
-\begin{lstlisting}[caption={Dos BFS para calcular el diámetro (tree\_diameter.h)}]
-// BFS desde 'start', retorna nodo mas lejano, distancias y padres
-std::tuple<int, std::vector<int>, std::vector<int>>
-bfs(int start, const std::string& phase) {
-    std::vector<int> dist(n, -1), parent(n, -1);
-    std::queue<int> q;
-    dist[start] = 0;
-    q.push(start);
-    int farthest = start;
-
-    while (!q.empty()) {
-        int u = q.front(); q.pop();
-        for (auto [v, w] : adj[u]) {
-            if (dist[v] == -1) {
-                dist[v]   = dist[u] + w;
-                parent[v] = u;
-                q.push(v);
-                if (dist[v] > dist[farthest]) farthest = v;
-            }
-        }
-    }
-    return {farthest, dist, parent};
-}
-
-// Calcula el diametro con dos BFS
-auto computeDiameter() {
-    auto [a, d1, p1] = bfs(0, "BFS1");   // BFS 1
-    auto [b, d2, p2] = bfs(a, "BFS2");   // BFS 2
-    int diameter = d2[b];
-    auto path = reconstructPath(a, b, p2);
-    return std::make_tuple(diameter, a, b, path);
-}
-\end{lstlisting}
-
-% ════════════════════════════════════════════════════════════
-\section{Pasos para reproducir el video}
-
+La regla de \emph{animación real} se cumple de la siguiente forma:
 \begin{enumerate}
-    \item Clonar el repositorio:
-    \begin{lstlisting}[language=bash]
-git clone https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol.git
-cd Proyecto2_AED_Diametro_de_arbol
-    \end{lstlisting}
-
-    \item Compilar:
-    \begin{lstlisting}[language=bash]
-cd src
-g++ -std=c++17 -O2 -o visualizer main.cpp
-    \end{lstlisting}
-
-    \item Ejecutar y seleccionar caso de prueba:
-    \begin{lstlisting}[language=bash]
-./visualizer
-    \end{lstlisting}
-
-    \item Usar OBS (u otro software de grabación) para capturar la terminal mientras se ejecuta el programa, agregando narración en voz en off.
+  \item Al presionar \textbf{Play} o \textbf{Siguiente Paso},
+        \texttt{stepForward()} llama a
+        \texttt{Tree::computeSteps(startNode)} la primera vez.
+        Esto ejecuta el Doble BFS \textbf{real} sobre la lista de
+        adyacencia propia (ninguna librería de grafos externa).
+  \item Cada evento del BFS genera un \texttt{AlgoStep} con el estado
+        completo (\texttt{dist[]}, \texttt{parent[]}, cola, estados de
+        nodos y aristas).
+  \item El motor gráfico lee esos estados en \texttt{goToStep(idx)} e
+        interpola los colores con \texttt{lerpC()} a 60~FPS.
+        Los valores que se muestran en la tabla \texttt{dist[]}/
+        \texttt{parent[]} y en las cajitas de la cola provienen
+        directamente de los arrays calculados por el algoritmo,
+        no de valores hardcodeados.
 \end{enumerate}
 
-% ════════════════════════════════════════════════════════════
-\section{Análisis de Complejidad}
+\subsection{Pasos para reproducir el proyecto y el video}
 
-\begin{table}[h!]
-\centering
+\begin{enumerate}
+  \item \textbf{Instalar dependencias:}
+\begin{lstlisting}[language=bash]
+sudo pacman -S raylib cmake      # Arch / EndeavourOS
+# ó
+sudo apt install libraylib-dev cmake  # Ubuntu
+\end{lstlisting}
+
+  \item \textbf{Compilar:}
+\begin{lstlisting}[language=bash]
+cd /ruta/al/Proyecto2
+chmod +x build.sh
+./build.sh
+\end{lstlisting}
+
+  \item \textbf{Ejecutar la interfaz:}
+\begin{lstlisting}[language=bash]
+./DiametroArbol
+\end{lstlisting}
+
+  \item \textbf{Grabar con OBS:}
+    \begin{itemize}
+      \item Fuente: \emph{Captura de ventana} $\to$ seleccionar
+            \texttt{DiametroArbol}.
+      \item Resolución: 1280×720 (o 1920×1080 con escalado).
+      \item Codec: H.264, contenedor MP4.
+      \item Narrar en voz en off mientras se opera la interfaz.
+    \end{itemize}
+
+  \item \textbf{Flujo de grabación sugerido:}
+    \begin{enumerate}[label=\alph*)]
+      \item \textbf{F1} — Presentar el título y la conceptualización.
+      \item \textbf{F2} — Elegir nodo inicial con clic; demostrar BFS~1
+            paso a paso (\textbf{→}), luego BFS~2 y reconstrucción.
+            Usar también Play automático.
+      \item \textbf{F3} — Mostrar los 4 casos borde uno a uno.
+      \item \textbf{F4} — Explicar el análisis de complejidad
+            con las barras visuales.
+    \end{enumerate}
+\end{enumerate}
+
+% ═══════════════════════════════════════════════════════════════
+\section{Análisis de Complejidad Temporal y Espacial}
+
+\subsection{Comparación frente al método ingenuo}
+
+El enfoque ingenuo ejecuta un BFS completo desde cada uno de los $n$ nodos:
+\[
+  T_{\text{ingenuo}} = n \cdot O(|V|+|E|) = n \cdot O(n) = O(n^2)
+\]
+
+\subsection{Complejidad temporal del Doble BFS}
+
+Sea $n = |V|$.  En un árbol, $|E| = n - 1$.
+
+\begin{center}
 \begin{tabular}{lcc}
 \toprule
-\textbf{Operación}                    & \textbf{Tiempo} & \textbf{Espacio} \\
+\textbf{Fase} & \textbf{Trabajo} & \textbf{Coste} \\
 \midrule
-BFS 1 (desde nodo 0)                  & $O(n)$          & $O(n)$           \\
-BFS 2 (desde nodo $a$)                & $O(n)$          & $O(n)$           \\
-Reconstrucción del camino             & $O(n)$          & $O(n)$           \\
+BFS 1 desde nodo $X$ & Encola cada nodo 1 vez; recorre $|V|+|E|$ & $O(n)$ \\
+BFS 2 desde Extremo A & Ídem & $O(n)$ \\
+Reconstrucción del camino & Recorre $\leq n$ punteros \texttt{parent[]} & $O(n)$ \\
 \midrule
-\textbf{Total}                        & $O(n)$          & $O(n)$           \\
+\textbf{Total} & & $O(n)+O(n)+O(n)$ \\
+ & & $= \mathbf{O(n)}$ \\
 \bottomrule
 \end{tabular}
-\caption{Complejidad del algoritmo de diámetro mediante dos BFS.}
-\end{table}
+\end{center}
 
-donde $n = |V|$ es el número de nodos del árbol.
+\subsection{Complejidad espacial}
 
-\textbf{Justificación:} Cada BFS visita cada nodo y arista exactamente una vez, lo que resulta en $O(|V| + |E|) = O(n)$ para árboles (ya que $|E| = n - 1$). La reconstrucción del camino recorre el arreglo de padres en $O(n)$.
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+\textbf{Estructura} & \textbf{Espacio} \\
+\midrule
+Lista de adyacencia (\texttt{adj[]}) & $O(n)$ \\
+Arreglo de distancias \texttt{dist[]} & $O(n)$ \\
+Arreglo de predecesores \texttt{parent[]} & $O(n)$ \\
+Cola BFS (\texttt{queue<int>}) & $O(n)$ \\
+Vector de micro-pasos de animación & $O(n \cdot k)$ donde $k$ es constante \\
+\midrule
+\textbf{Total} & $\mathbf{O(n)}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-\subsection{Casos borde}
+% ═══════════════════════════════════════════════════════════════
+\section{Contribuciones de cada Integrante}
 
-\begin{itemize}
-    \item \textbf{Árbol trivial ($n = 1$):} El diámetro es $0$ (un solo nodo, ningún camino).
-    \item \textbf{Dos nodos ($n = 2$):} El diámetro es el peso de la única arista.
-    \item \textbf{Árbol lineal (cadena):} El diámetro equivale a $n - 1$ aristas (peor caso para árbol no ponderado).
-    \item \textbf{Árbol estrella:} El diámetro es $2$ (cualquier camino hoja–raíz–hoja).
-\end{itemize}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Integrante} & \textbf{Contribución} \\
+\hline
+% COMPLETA CON NOMBRES REALES
+Eduardo [APELLIDO] &
+  Diseño e implementación del algoritmo (\texttt{Tree.hpp}, \texttt{Tree.cpp}),
+  interfaz gráfica completa (\texttt{Visualizer.hpp}, \texttt{Visualizer.cpp},
+  \texttt{main.cpp}),
+  script de compilación, \texttt{README.md},
+  configuración del repositorio GitHub,
+  grabación y narración del video con OBS,
+  redacción del informe en \LaTeX. \\
+\hline
+% [INTEGRANTE 2] & ... \\
+% \hline
+% [INTEGRANTE 3] & ... \\
+% \hline
+\end{tabularx}
 
-% ════════════════════════════════════════════════════════════
-\section{Contribuciones de cada integrante}
+% ═══════════════════════════════════════════════════════════════
+\section{Evidencia, Capturas y Enlaces}
 
-% ── COMPLETA ESTA SECCIÓN CON LAS CONTRIBUCIONES REALES ──────
-\begin{itemize}
-    \item \textbf{Eduardo:} Implementación del algoritmo (\texttt{tree\_diameter.h}), interfaz visual en terminal (\texttt{main.cpp}), README, configuración del repositorio GitHub, grabación del video.
-    % \item \textbf{Integrante 2:} ...
-    % \item \textbf{Integrante 3:} ...
-\end{itemize}
+\subsection{Repositorio GitHub}
 
-% ════════════════════════════════════════════════════════════
-\section{Evidencia}
+\begin{center}
+  \href{https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol}%
+       {\texttt{https://github.com/Eddddddd06/Proyecto2\_AED\_Diametro\_de\_arbol}}
+\end{center}
 
-\begin{itemize}
-    \item \textbf{Repositorio GitHub:}\\
-    \url{https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol}
+\subsection{Video}
 
-    \item \textbf{Video (enlace):}\\
-    % Agrega el enlace a YouTube no listado o Drive aquí
-    \textit{[COMPLETAR ENLACE AL VIDEO]}
+% Reemplaza con tu enlace real de YouTube (no listado) o Google Drive:
+\begin{center}
+  \href{ENLACE_AL_VIDEO}{\texttt{[COMPLETAR: enlace YouTube/Drive al video.mp4]}}
+\end{center}
 
-    % Si tienes capturas de pantalla, descomenta y adapta:
-    % \begin{figure}[h!]
-    %     \centering
-    %     \includegraphics[width=0.85\textwidth]{captura_bfs1.png}
-    %     \caption{Interfaz durante el BFS 1 – nodo actual resaltado en azul.}
-    % \end{figure}
-\end{itemize}
+\subsection{Capturas de pantalla}
 
-% ════════════════════════════════════════════════════════════
+% Descomenta y adapta con tus capturas reales:
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=0.85\textwidth]{capturas/f1_portada.png}
+%   \caption{Pestaña F1: Portada e Introducción Conceptual.}
+% \end{figure}
+%
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=0.85\textwidth]{capturas/f2_bfs1.png}
+%   \caption{Pestaña F2: BFS 1 en progreso — nodo actual en cian,
+%            cola en ámbar, tabla dist[] actualizada.}
+% \end{figure}
+%
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=0.85\textwidth]{capturas/f2_diametro.png}
+%   \caption{Pestaña F2: Diámetro encontrado — camino resaltado en verde.}
+% \end{figure}
+%
+% \begin{figure}[h!]
+%   \centering
+%   \includegraphics[width=0.85\textwidth]{capturas/f3_casos.png}
+%   \caption{Pestaña F3: Laboratorio de Casos Borde.}
+% \end{figure}
+
+% ═══════════════════════════════════════════════════════════════
 \section{Conclusiones}
 
 \begin{enumerate}
-    \item El algoritmo de diámetro mediante dos BFS es sorprendentemente simple pero matemáticamente elegante: aprovecha la propiedad de que el nodo más lejano desde cualquier nodo es siempre un extremo del diámetro, logrando resolver el problema en tiempo lineal $O(n)$ sin necesidad de calcular todas las distancias por pares (que tomaría $O(n^2)$).
 
-    \item La visualización paso a paso en terminal permite comprender intuitivamente cómo los dos recorridos BFS convergen hacia los extremos del diámetro, haciendo evidente que la información local de cada BFS es suficiente para determinar el camino global más largo del árbol.
+  \item \textbf{Reducción de $O(n^2)$ a $O(n)$ mediante propiedades
+        estructurales del árbol.}
+        El algoritmo de Doble BFS explota la propiedad fundamental de que,
+        en cualquier árbol, el nodo más lejano desde cualquier vértice es
+        siempre un extremo real del diámetro.
+        Esta propiedad, exclusiva de los árboles (ausente en grafos generales),
+        permite resolver en dos recorridos lineales lo que naïvamente
+        requeriría $n$ BFS completos.
 
-    % Puedes agregar más conclusiones:
-    % \item ...
+  \item \textbf{El visualizador interactivo permite verificar empíricamente
+        el funcionamiento del algoritmo.}
+        Al observar en tiempo real la cola \texttt{Queue} llenarse y vaciarse,
+        y la tabla \texttt{dist[]}/\texttt{parent[]} actualizarse celda a celda
+        con cada micro-paso, el usuario puede confirmar que el Extremo~A
+        hallado en el primer BFS es siempre correcto como punto de partida
+        para el segundo BFS, y que la reconstrucción del camino sigue
+        fielmente los punteros \texttt{parent[]} generados por el algoritmo
+        real.
+
+  \item \textbf{La validación frente a casos borde estructurales es esencial
+        para garantizar robustez.}
+        El árbol vacío ($n=0$), el árbol de un solo nodo ($n=1$) y la cadena
+        lineal degenerada (donde el diámetro alcanza su valor máximo posible
+        $n-1$) representan condiciones límite que pueden provocar
+        comportamientos indefinidos en implementaciones ingénuas (accesos a
+        índices inválidos, divisiones por cero en el layout, colas vacías
+        mal manejadas).
+        La implementación fue diseñada explícitamente para detectar y manejar
+        cada uno de estos casos de forma controlada.
+
 \end{enumerate}
 
-% ════════════════════════════════════════════════════════════
+% ═══════════════════════════════════════════════════════════════
 \section*{Referencias}
 
 \begin{itemize}
-    \item Cormen, T. H., Leiserson, C. E., Rivest, R. L., \& Stein, C. (2009). \textit{Introduction to Algorithms} (3rd ed.). MIT Press.
-    \item CP-Algorithms. \textit{Tree Diameter}. \url{https://cp-algorithms.com/graph/diameter-of-a-tree.html}
-    \item 3Blue1Brown. \url{https://www.3blue1brown.com/}
+  \item Cormen, T. H., Leiserson, C. E., Rivest, R. L., \& Stein, C. (2009).
+        \textit{Introduction to Algorithms} (3rd ed.). MIT Press.
+
+  \item CP-Algorithms. \textit{Diameter of a Tree}.
+        \url{https://cp-algorithms.com/graph/diameter-of-a-tree.html}
+
+  \item Raysan5. \textit{Raylib — A simple and easy-to-use library to enjoy
+        videogames programming} (v5.0).
+        \url{https://www.raylib.com/}
+        Inspiración de estilo visual e interfaz interactiva.
+
+  \item 3Blue1Brown. \textit{Canal de YouTube -- Matemáticas animadas}.
+        \url{https://www.3blue1brown.com/}
+        Referencia de estilo de visualización educativa.
+
+  \item Grant Sanderson (3Blue1Brown). \textit{Manim Community}.
+        \url{https://docs.manim.community/}
+        Motor de animación matemática de referencia del proyecto.
 \end{itemize}
 
 \end{document}

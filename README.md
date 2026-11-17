@@ -1,71 +1,118 @@
 # Diámetro de un Árbol — CS2023 AED | UTEC 2026-2
 
 > **Proyecto Final 2 – Anima tu Algoritmo o Estructura de Datos**
-> Tema asignado: **Diámetro de un árbol**
+> Tema: **Diámetro de un árbol (Doble BFS en O(n))**
 
 ## Descripción
 
-El **diámetro de un árbol** es el camino de mayor longitud entre dos nodos del árbol, medido como la cantidad de aristas (árbol no ponderado) o la suma de pesos de las aristas (árbol ponderado). Este proyecto implementa el algoritmo clásico de **dos recorridos BFS** en tiempo **O(n)** e incluye una interfaz visual animada en terminal para observar la ejecución paso a paso.
-
-## Algoritmo
-
-1. **BFS 1:** Desde cualquier nodo (p. ej. nodo 0), encontrar el nodo más lejano `a`.
-2. **BFS 2:** Desde `a`, encontrar el nodo más lejano `b`.
-3. El camino `a → b` es el diámetro del árbol.
-
-**Complejidad:** O(n) tiempo · O(n) espacio
+Aplicación gráfica interactiva de escritorio en **C++ con Raylib** que visualiza paso a paso el algoritmo de **Doble BFS** para encontrar el diámetro de un árbol en tiempo **O(n)**. Diseñada para ser usada en vivo mientras se graba con OBS para el video del proyecto.
 
 ## Estructura del repositorio
 
 ```
 Proyecto2/
 ├── src/
-│   ├── tree_diameter.h   # Implementación del algoritmo (header-only)
-│   └── main.cpp          # Interfaz visual interactiva (terminal)
+│   ├── Tree.hpp          # Tipos, enums, clase Tree
+│   ├── Tree.cpp          # Doble BFS con grabación de micro-pasos
+│   ├── Visualizer.hpp    # Clase Visualizer (Raylib)
+│   ├── Visualizer.cpp    # Toda la UI gráfica (~1300 líneas)
+│   └── main.cpp          # Punto de entrada
 ├── docs/
 │   └── CS2023_Proyecto_de_Curso_2.md
 ├── latex_doc/
-│   └── informe.txt       # Código LaTeX del informe (en formato .txt)
+│   └── informe.txt       # Código LaTeX del informe
+├── CMakeLists.txt
+├── build.sh              # Script de compilación directa
 └── README.md
 ```
 
 ## Requisitos
 
-- **Compilador:** g++ con soporte C++17 (`-std=c++17`)
-- **Sistema operativo:** Linux / macOS (colores ANSI) — en Windows usar WSL o terminal con soporte ANSI
+```bash
+sudo pacman -S raylib cmake      # Arch / EndeavourOS
+# ó
+sudo apt install libraylib-dev cmake  # Ubuntu
+```
 
 ## Compilar y ejecutar
 
+**Opción 1 – Script directo (más rápido):**
 ```bash
-cd src
-g++ -std=c++17 -O2 -o visualizer main.cpp
-./visualizer
+chmod +x build.sh
+./build.sh
+./DiametroArbol
 ```
 
-## Casos de prueba incluidos
+**Opción 2 – CMake:**
+```bash
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
+./DiametroArbol
+```
 
-| # | Descripción                          | n | Diámetro |
-|---|--------------------------------------|---|----------|
-| 1 | Árbol lineal (cadena)                | 6 | 5        |
-| 2 | Árbol tipo Y con rama extra          | 7 | 4        |
-| 3 | Árbol ponderado con ramas largas     | 6 | variable |
-| 4 | Caso borde: un solo nodo             | 1 | 0        |
-| 5 | Caso borde: dos nodos                | 2 | 1        |
-| 6 | Entrada personalizada por el usuario | — | —        |
+**Opción 3 – g++ directo:**
+```bash
+g++ -std=c++17 -O2 src/main.cpp src/Tree.cpp src/Visualizer.cpp \
+    -Isrc $(pkg-config --cflags --libs raylib) -lm -lpthread -ldl \
+    -o DiametroArbol
+./DiametroArbol
+```
 
-## Interfaz visual
+## Controles de la aplicación
 
-La interfaz muestra en tiempo real:
-- Árbol con colores: nodo actual (azul), camino del diámetro (verde)
-- Tabla de distancias actualizada en cada paso de BFS
-- Fase actual (BFS1 / BFS2) y nodo más lejano encontrado
-- Resultado final con el camino del diámetro resaltado
-- Análisis de complejidad al final
+| Acción | Mouse | Teclado |
+|--------|-------|---------|
+| Cambiar pestaña | Clic en tab | F1 / F2 / F3 / F4 |
+| Play / Pausa | Botón ▶ | Espacio |
+| Paso siguiente | Botón ⏭ | → |
+| Paso anterior | Botón ⏮ | ← |
+| Reiniciar | Botón 🔄 | R |
+| Velocidad + / − | Botones | + / − |
+| Cambiar árbol ponderado | Botón | W |
+| Elegir nodo inicial | Clic en nodo | — |
+
+## Pestañas (F1–F4)
+
+| Tab | Contenido |
+|-----|-----------|
+| **F1 – Portada** | Título, integrantes, 3 tarjetas conceptuales |
+| **F2 – Simulador** | Árbol de 10 nodos, animación completa del Doble BFS |
+| **F3 – Casos Borde** | Árbol vacío, 1 nodo, cadena lineal, estrella |
+| **F4 – Complejidad** | Comparativa O(n) vs O(n²), desglose, créditos |
+
+## Algoritmo implementado
+
+1. **BFS 1:** Desde nodo inicial X → encuentra el nodo más lejano **A**
+2. **BFS 2:** Desde A → encuentra el nodo más lejano **B**
+3. El camino **A → B** es el **diámetro** del árbol
+
+**Complejidad:** O(n) tiempo · O(n) espacio
+
+## Código de colores en la visualización
+
+| Color | Significado |
+|-------|-------------|
+| 🔵 Gris azulado | No visitado |
+| 🟡 Ámbar | En la cola BFS |
+| 🩵 Cian | Nodo actual (procesando) |
+| 🔷 Azul acero | Procesado completamente |
+| 🔴 Rojo coral | Extremo A / Extremo B |
+| 🟢 Verde | Camino del diámetro final |
+
+## Grabación del video (OBS)
+
+1. Ejecutar `./DiametroArbol`
+2. En OBS: capturar ventana específica → `DiametroArbol`
+3. Navegar por las 4 pestañas con F1–F4
+4. En F2: elegir nodo inicial con clic, usar Play/Paso a paso
+5. En F3: mostrar los 4 casos borde
+6. Exportar como `.mp4` en alta resolución
 
 ## Integrantes
 
-- Eduardo (Eddddddd06)
+- Eduardo (Eddddddd06) | UTEC
 
 ## Curso
 
-CS2023 – Algoritmos y Estructuras de Datos | UTEC 2026-2
+CS2023 – Algoritmos y Estructuras de Datos | UTEC 2026-2 | Prof. Víctor Racsó Galván Oyola
