@@ -4,6 +4,8 @@
 #include <utility>
 #include <queue>
 
+
+// Los enumss  
 enum class EstNodo {
     NO_VIS,
     EN_COLA,
@@ -39,6 +41,8 @@ enum class TipoPaso {
     ALGO_FIN
 };
 
+// los structs 
+
 struct Paso {
     TipoPaso tipo;
     FaseBFS fase;
@@ -61,39 +65,40 @@ struct Arista {
     int peso;
 };
 
+
+// clase tree base 
 class Tree {
 public:
     int n;
-    std::vector<std::vector<Arista>> adj;
-
-    std::vector<std::pair<int,int>> listaAri;
-    std::vector<int> pesosAri;
-
+    std::vector<std::vector<Arista>>  adj; // lsita de adyacencia  
+    std::vector<std::pair<int,int>> listaAri;  // tupla 
+    std::vector<int>  pesosAri ; // lista de pesos 
     Tree();
-    explicit Tree(int nodes);
-
-    void agregarAri(int u, int v, int w = 1);
+    explicit Tree(int nodes); 
+    void agregarAri(int u,int v,int w = 1);
     void clear();
-    void resize(int nodes);
+    void resize(int nodes); 
+    std::vector<Paso> calcPasos(int nodoIni = 0)  const;
 
-    std::vector<Paso> calcPasos(int nodoIni = 0) const;
 
     struct Result {
-        int diam = 0;
-        int extremoA = -1;
-        int extremoB = -1;
-        std::vector<int> camino;
-        bool ok = false;
+        int diam =0;
+        int extremoA  =-1;
+        int extremoB= -1 ;
+        std::vector<int>  camino;
+        bool ok = false ;
     };
-    static Result sacarRes(const std::vector<Paso>& pasos);
+
+    static Result sacarRes(const std::vector<Paso>&  pasos);
 
 private:
+
     struct ResBFS {
         int extremo;
         int dstExtr;
         std::vector<int> dst;
         std::vector<int> pad;
     };
-    ResBFS runBFS(int start, FaseBFS fase,
-                  std::vector<Paso>& pasos) const;
+
+    ResBFS runBFS(int start, FaseBFS fase, std::vector<Paso>& pasos) const;
 };

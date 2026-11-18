@@ -112,7 +112,7 @@ g++ -std=c++17 -O2 src/main.cpp src/Tree.cpp src/Visualizer.cpp \
 ## Integrantes
 
 - Eduardo (Eddddddd06) | UTEC
-- Leonardo () | UTEC
+- Leonardo (Lnrdogst) | UTEC
 
 ## Curso
 

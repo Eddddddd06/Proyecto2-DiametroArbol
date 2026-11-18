@@ -42,16 +42,13 @@ static std::vector<int> colaAVec(std::queue<int> q) {
     return v;
 }
 
-Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
-                           std::vector<Paso>& pasos) const {
+Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,std::vector<Paso>& pasos) const {
     const std::string tag = (fase == FaseBFS::BFS1) ? "BFS 1" : "BFS 2";
     const int E = (int)listaAri.size();
-
     std::vector<int> dst(n, -1);
     std::vector<int> pad(n, -1);
     std::vector<EstNodo> ns(n, EstNodo::NO_VIS);
     std::vector<EstAri> es(E, EstAri::NO_VIS);
-
     std::queue<int> q;
     dst[start] = 0;
     ns[start] = EstNodo::EN_COLA;
@@ -73,17 +70,13 @@ Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
         s.estNodos = ns;
         s.estAris = es;
         s.idxRec = -1;
-        s.desc = tag + ": Inicializamos el BFS. Encolamos v"
-               + std::to_string(start)
-               + " con dist[v" + std::to_string(start) + "] = 0."
-               + "  Cola = { v" + std::to_string(start) + " }.";
+        s.desc = tag + ": Inicializamos el BFS. Encolamos v" + std::to_string(start)  + " con dist[v" + std::to_string(start) + "] = 0." +"  Cola = { v" + std::to_string(start) + " }.";
         pasos.push_back(s);
     }
 
     while (!q.empty()) {
         int u = q.front(); q.pop();
         ns[u] = EstNodo::ACTUAL;
-
         {
             Paso s;
             s.tipo = TipoPaso::BFS_SACA;
@@ -94,11 +87,7 @@ Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
             s.arrDst = dst; s.arrPad = pad;
             s.estNodos = ns; s.estAris = es;
             s.idxRec = -1;
-            s.desc = tag + " - Paso " + std::to_string(numPaso)
-                   + ": Sacamos v" + std::to_string(u)
-                   + " de la cola. dist[v" + std::to_string(u)
-                   + "] = " + std::to_string(dst[u])
-                   + ". Exploramos sus vecinos...";
+            s.desc = tag + " - Paso " + std::to_string(numPaso) + ": Sacamos v" + std::to_string(u)+ " de la cola. dist[v" + std::to_string(u)+ "] = " + std::to_string(dst[u]) + ". Exploramos sus vecinos...";
             pasos.push_back(s);
         }
 
@@ -113,7 +102,7 @@ Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
                 int eIdx = buscarAri(listaAri, u, v);
                 if (eIdx >= 0) es[eIdx] = EstAri::ARI_BFS;
 
-                // sacar max dist
+                // sacar max disst 
                 if (dst[v] > dstMax) {
                     lejano = v;
                     dstMax = dst[v];
@@ -128,15 +117,7 @@ Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
                 s.arrDst = dst; s.arrPad = pad;
                 s.estNodos = ns; s.estAris = es;
                 s.idxRec = -1;
-                s.desc = tag + " - Paso " + std::to_string(numPaso)
-                       + ": Vecino no visitado v" + std::to_string(v)
-                       + ". dist[v" + std::to_string(v)
-                       + "] = dist[v" + std::to_string(u)
-                       + "] + " + std::to_string(e.peso)
-                       + " = " + std::to_string(dst[v])
-                       + ". Encolado. Cola = { "
-                       + [&]{ std::string r; for(int x:colaAVec(q)) r+="v"+std::to_string(x)+" "; return r; }()
-                       + "}.";
+                s.desc = tag + " - Paso " + std::to_string(numPaso) + ": Vecino no visitado v" + std::to_string(v)+ ". dist[v" + std::to_string(v) + "] = dist[v" + std::to_string(u) + "] + " + std::to_string(e.peso)+ " = " + std::to_string(dst[v])+ ". Encolado. Cola = { " + [&]{ std::string r; for(int x:colaAVec(q)) r+="v"+std::to_string(x)+" "; return r; }() + "}.";
                 pasos.push_back(s);
 
             } else {
@@ -149,18 +130,13 @@ Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
                 s.arrDst = dst; s.arrPad = pad;
                 s.estNodos = ns; s.estAris = es;
                 s.idxRec = -1;
-                s.desc = tag + " - Paso " + std::to_string(numPaso)
-                       + ": Vecino v" + std::to_string(v)
-                       + " ya visitado (dist = " + std::to_string(dst[v])
-                       + "). Lo ignoramos.";
+                s.desc = tag + " - Paso " + std::to_string(numPaso) + ": Vecino v" + std::to_string(v)+ " ya visitado (dist = " + std::to_string(dst[v]) + "). Lo ignoramos.";
                 pasos.push_back(s);
             }
         }
-
         ns[u] = EstNodo::PROCESADO;
         numPaso++;
     }
-
     EstNodo estExtr = (fase == FaseBFS::BFS1) ? EstNodo::EXTREMO_A : EstNodo::EXTREMO_B;
     ns[lejano] = estExtr;
     std::string nombre = (fase == FaseBFS::BFS1) ? "Extremo A" : "Extremo B";
@@ -174,13 +150,9 @@ Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
         s.arrDst = dst; s.arrPad = pad;
         s.estNodos = ns; s.estAris = es;
         s.idxRec = -1;
-        s.desc = tag + " completado. Nodo mas lejano: v"
-               + std::to_string(lejano)
-               + " con dist = " + std::to_string(dstMax)
-               + ". Este es el " + nombre + "!";
+        s.desc = tag + " completado. Nodo mas lejano: v" + std::to_string(lejano)+ " con dist = " + std::to_string(dstMax) + ". Este es el " + nombre + "!";
         pasos.push_back(s);
     }
-
     return {lejano, dstMax, dst, pad};
 }
 
@@ -225,9 +197,7 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.estNodos = ns;
         s.estAris.assign(E, EstAri::NO_VIS);
         s.idxRec = -1;
-        s.desc = "Iniciando algoritmo de Doble BFS desde v"
-               + std::to_string(nodoIni)
-               + ". BFS 1: encontraremos el nodo mas lejano (Extremo A).";
+        s.desc = "Iniciando algoritmo de Doble BFS desde v" + std::to_string(nodoIni) + ". BFS 1: encontraremos el nodo mas lejano (Extremo A).";
         pasos.push_back(s);
     }
 
@@ -238,14 +208,11 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         Paso s = prev;
         s.tipo = TipoPaso::BFS_INI; s.fase = FaseBFS::BFS2;
         s.u = r1.extremo;
-        s.desc = "Iniciando BFS 2 desde el Extremo A (v"
-               + std::to_string(r1.extremo)
-               + "). Reiniciamos distancias. Encontraremos el Extremo B.";
+        s.desc = "Iniciando BFS 2 desde el Extremo A (v" + std::to_string(r1.extremo)+ "). Reiniciamos distancias. Encontraremos el Extremo B.";
         pasos.push_back(s);
     }
     ResBFS r2 = runBFS(r1.extremo, FaseBFS::BFS2, pasos);
-
-    // reconstruir camino
+    // reconstrir el camino
     std::vector<int> camino;
     for (int v = r2.extremo; v != -1; v = r2.pad[v]) camino.push_back(v);
     std::reverse(camino.begin(), camino.end());
@@ -272,20 +239,16 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.arrDst = r2.dst; s.arrPad = r2.pad;
         s.estNodos = nsr; s.estAris = esr;
         s.idxRec = i;
-        s.desc = "Reconstruyendo diametro: Resaltando arista v"
-               + std::to_string(ua) + " - v" + std::to_string(va)
-               + "  (parent[v" + std::to_string(va)
-               + "] = v" + std::to_string(ua) + ")."
-               + "  Arista " + std::to_string(i+1) + " de "
-               + std::to_string((int)camino.size()-1) + ".";
+        s.desc = "Reconstruyendo diametro: Resaltando arista v"+ std::to_string(ua) + " - v" + std::to_string(va) + "  (parent[v" + std::to_string(va)  + "] = v" + std::to_string(ua) + ")."   + "  Arista " + std::to_string(i+1) + " de "   + std::to_string((int)camino.size()-1) + ".";
         pasos.push_back(s);
     }
 
     {
         std::string caminoStr = "v" + std::to_string(camino[0]);
-        for (int i = 1; i < (int)camino.size(); ++i)
+        for (int i = 1; i < (int)camino.size(); ++i){
             caminoStr += " -> v" + std::to_string(camino[i]);
-
+        }
+            
         Paso s;
         s.tipo = TipoPaso::ALGO_FIN; s.fase = FaseBFS::DONE;
         s.u = r1.extremo; s.v = r2.extremo; s.dst_v = diam;
@@ -294,10 +257,7 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.arrDst = r2.dst; s.arrPad = r2.pad;
         s.estNodos = nsr; s.estAris = esr;
         s.idxRec = (int)camino.size() - 1;
-        s.desc = "Algoritmo completo! Camino del diametro: "
-               + caminoStr
-               + ".  Longitud del diametro = "
-               + std::to_string(diam) + " arista(s).";
+        s.desc = "Algoritmo completo! Camino del diametro: " + caminoStr + ".  Longitud del diametro = " + std::to_string(diam) + " arista(s).";
         pasos.push_back(s);
     }
 
