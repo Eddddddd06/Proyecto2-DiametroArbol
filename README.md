@@ -7,7 +7,7 @@
 
 ## Descripción
 
-Aplicación gráfica interactiva de escritorio en **C++ con Raylib** que visualiza paso a paso el algoritmo de **Doble BFS** para encontrar el diámetro de un árbol en tiempo **O(n)**. Diseñada para ser usada en vivo. 
+Aplicación gráfica interactiva de escritorio en **C++ con Raylib** que visualiza paso a paso el algoritmo de **Doble BFS** para encontrar el diámetro de un árbol en tiempo **O(n)**. 
 
 ## Estructura del repositorio
 
@@ -102,5 +102,5 @@ g++ -std=c++17 -O2 src/main.cpp src/Tree.cpp src/Visualizer.cpp \
 
 - Eduardo (Eddddddd06) | UTEC
 - Leonardo (Lnrdogst) | UTEC
-- 
-**GRACIAS PROFE**
+  
+      **GRACIAS PROFE**
