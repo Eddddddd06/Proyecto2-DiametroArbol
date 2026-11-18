@@ -2,6 +2,8 @@
 
 > **Proyecto Final 2 - AED**
 > Tema: **Diámetro de un árbol (Doble BFS en O(n))**
+> Prof. Víctor Racsó Galván Oyola
+
 
 ## Descripción
 
@@ -96,20 +98,9 @@ g++ -std=c++17 -O2 src/main.cpp src/Tree.cpp src/Visualizer.cpp \
 | 🔴 Rojo coral | Extremo A / Extremo B |
 | 🟢 Verde | Camino del diámetro final |
 
-## Grabación del video (OBS)
-
-1. Ejecutar `./DiametroArbol`
-2. En OBS: capturar ventana específica → `DiametroArbol`
-3. Navegar por las 4 pestañas con F1–F4
-4. En F2: elegir nodo inicial con clic, usar Play/Paso a paso
-5. En F3: mostrar los 4 casos borde
-6. Exportar como `.mp4` en alta resolución
-
 ## Integrantes
 
 - Eduardo (Eddddddd06) | UTEC
 - Leonardo (Lnrdogst) | UTEC
-
-## Curso
-
-CS2023 – Algoritmos y Estructuras de Datos | UTEC 2026-2 | Prof. Víctor Racsó Galván Oyola
+- 
+**GRACIAS PROFE**
