@@ -17,10 +17,6 @@ Proyecto2/
 │   ├── Visualizer.h      # Clase Visualizer (Raylib)
 │   ├── Visualizer.cpp    # Toda la UI gráfica (~1300 líneas)
 │   └── main.cpp          # Punto de entrada
-├── docs/
-│   └── CS2023_Proyecto_de_Curso_2.md
-├── latex_doc/
-│   └── informe.txt       # Código LaTeX del informe
 ├── CMakeLists.txt
 ├── build.sh              # Script de compilación directa
 └── README.md
