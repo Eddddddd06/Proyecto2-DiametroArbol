@@ -1001,9 +1001,8 @@ void Viz::dibTabIntro() {
     int my = y + 10;
     DrawText("Integrantes del Grupo:", cx - 240, my, 14, Pal::CYAN_C());
     my += 20;
-    DrawText("  [INTEGRANTE_1]  -  [CODIGO_1]", cx - 240, my, 13, Pal::TEXT()); my += 18;
-    DrawText("  [INTEGRANTE_2]  -  [CODIGO_2]", cx - 240, my, 13, Pal::TEXT()); my += 18;
-    DrawText("  [INTEGRANTE_3]  -  [CODIGO_3]", cx - 240, my, 13, Pal::TEXT());
+    DrawText("  Eduardo Osorio", cx - 240, my, 13, Pal::TEXT()); my += 18;
+    DrawText("  Leonardo Sanchez Terrazos", cx - 240, my, 13, Pal::TEXT());
     y += 110;
 
     struct InfoCard {
@@ -1122,9 +1121,8 @@ void Viz::dibTabComplejidad() {
     textoC("Proyecto: Diametro de un Arbol en O(n) | CS2023 AED | UTEC 2026-2",
            cx, cy2, 13, Pal::CYAN_C());
     cy2 += 22;
-    DrawText("  [INTEGRANTE_1]  -  [CODIGO_1]", cx - 330, cy2, 12, Pal::TEXT()); cy2 += 18;
-    DrawText("  [INTEGRANTE_2]  -  [CODIGO_2]", cx - 330, cy2, 12, Pal::TEXT()); cy2 += 18;
-    DrawText("  [INTEGRANTE_3]  -  [CODIGO_3]", cx - 330, cy2, 12, Pal::TEXT()); cy2 += 18;
+    DrawText("  Eduardo Osorio", cx - 330, cy2, 12, Pal::TEXT()); cy2 += 18;
+    DrawText("  Leonardo Sanchez Terrazos", cx - 330, cy2, 12, Pal::TEXT()); cy2 += 18;
     DrawText("GitHub: https://github.com/Eddddddd06/Proyecto2_AED_Diametro_de_arbol",
              cx - 330, cy2, 12, Pal::TEXT_DIM());
 }
