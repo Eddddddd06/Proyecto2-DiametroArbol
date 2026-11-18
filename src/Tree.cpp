@@ -174,10 +174,10 @@ Tree::ResBFS Tree::runBFS(int start, FaseBFS fase,
         s.arrDst = dst; s.arrPad = pad;
         s.estNodos = ns; s.estAris = es;
         s.idxRec = -1;
-        s.desc = tag + " completado. Nodo más lejano: v"
+        s.desc = tag + " completado. Nodo mas lejano: v"
                + std::to_string(lejano)
                + " con dist = " + std::to_string(dstMax)
-               + ". ¡Este es el " + nombre + "!";
+               + ". Este es el " + nombre + "!";
         pasos.push_back(s);
     }
 
@@ -195,7 +195,7 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.u = -1; s.v = -1; s.dst_v = 0;
         s.lejano = -1; s.dstMax = 0;
         s.idxRec = -1;
-        s.desc = "Árbol vacío (N = 0). No hay nodos. Diámetro = 0.";
+        s.desc = "Arbol vacio (N = 0). No hay nodos. Diametro = 0.";
         pasos.push_back(s);
         return pasos;
     }
@@ -209,7 +209,7 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.arrDst = {0}; s.arrPad = {-1};
         s.estNodos = ns; s.estAris = {};
         s.idxRec = 0;
-        s.desc = "Árbol de un solo nodo (N = 1). Extremo A = Extremo B = v0. Diámetro = 0.";
+        s.desc = "Arbol de un solo nodo (N = 1). Extremo A = Extremo B = v0. Diametro = 0.";
         pasos.push_back(s);
         return pasos;
     }
@@ -227,7 +227,7 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.idxRec = -1;
         s.desc = "Iniciando algoritmo de Doble BFS desde v"
                + std::to_string(nodoIni)
-               + ". BFS 1: encontraremos el nodo más lejano (Extremo A).";
+               + ". BFS 1: encontraremos el nodo mas lejano (Extremo A).";
         pasos.push_back(s);
     }
 
@@ -272,8 +272,8 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.arrDst = r2.dst; s.arrPad = r2.pad;
         s.estNodos = nsr; s.estAris = esr;
         s.idxRec = i;
-        s.desc = "Reconstruyendo diámetro: Resaltando arista v"
-               + std::to_string(ua) + " ─ v" + std::to_string(va)
+        s.desc = "Reconstruyendo diametro: Resaltando arista v"
+               + std::to_string(ua) + " - v" + std::to_string(va)
                + "  (parent[v" + std::to_string(va)
                + "] = v" + std::to_string(ua) + ")."
                + "  Arista " + std::to_string(i+1) + " de "
@@ -284,7 +284,7 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
     {
         std::string caminoStr = "v" + std::to_string(camino[0]);
         for (int i = 1; i < (int)camino.size(); ++i)
-            caminoStr += " → v" + std::to_string(camino[i]);
+            caminoStr += " -> v" + std::to_string(camino[i]);
 
         Paso s;
         s.tipo = TipoPaso::ALGO_FIN; s.fase = FaseBFS::DONE;
@@ -294,9 +294,9 @@ std::vector<Paso> Tree::calcPasos(int nodoIni) const {
         s.arrDst = r2.dst; s.arrPad = r2.pad;
         s.estNodos = nsr; s.estAris = esr;
         s.idxRec = (int)camino.size() - 1;
-        s.desc = "¡Algoritmo completo! Camino del diámetro: "
+        s.desc = "Algoritmo completo! Camino del diametro: "
                + caminoStr
-               + ".  Longitud del diámetro = "
+               + ".  Longitud del diametro = "
                + std::to_string(diam) + " arista(s).";
         pasos.push_back(s);
     }

@@ -67,12 +67,12 @@ void Viz::init() {
     bTabs[2].alClick = [this]{ tabAct = Tab::EDGE_CASES; };
 
     bTabs[3].rect = {950, 2, 320, 46};
-    bTabs[3].txt = "F4  Complejidad & Créditos";
+    bTabs[3].txt = "F4  Complejidad & Creditos";
     bTabs[3].atajo = "";
     bTabs[3].alClick = [this]{ tabAct = Tab::COMPLEXITY; };
 
     bPlay.rect = {5, 70, 220, 38};
-    bPlay.txt = "▶  Play / ⏸ Pausa";
+    bPlay.txt = "Play / Pausa";
     bPlay.atajo = "[Espacio]";
     bPlay.alClick = [this]{
         reprod = !reprod;
@@ -80,22 +80,22 @@ void Viz::init() {
     };
 
     bSig.rect = {5, 114, 107, 34};
-    bSig.txt = "⏭ Siguiente";
-    bSig.atajo = "[→]";
+    bSig.txt = "Siguiente";
+    bSig.atajo = "[->]";
     bSig.alClick = [this]{ avanzar(); };
 
     bAnt.rect = {118, 114, 107, 34};
-    bAnt.txt = "⏮ Anterior";
-    bAnt.atajo = "[←]";
+    bAnt.txt = "Anterior";
+    bAnt.atajo = "[<-]";
     bAnt.alClick = [this]{ retroceder(); };
 
     bReset.rect = {5, 154, 220, 34};
-    bReset.txt = "🔄 Reiniciar";
+    bReset.txt = "Reiniciar";
     bReset.atajo = "[R]";
     bReset.alClick = [this]{ reiniciar(); };
 
     bVelMen.rect = {5, 194, 105, 30};
-    bVelMen.txt = "Velocidad −";
+    bVelMen.txt = "Velocidad -";
     bVelMen.atajo = "[-]";
     bVelMen.alClick = [this]{ vel = std::max(0.25f, vel - 0.25f); };
 
@@ -105,7 +105,7 @@ void Viz::init() {
     bVelMas.alClick = [this]{ vel = std::min(3.0f, vel + 0.25f); };
 
     bPeso.rect = {5, 230, 220, 30};
-    bPeso.txt = "Alternar Árbol Ponderado";
+    bPeso.txt = "Alternar Arbol Ponderado";
     bPeso.atajo = "[W]";
     bPeso.alClick = [this]{
         modoPeso = !modoPeso;
@@ -114,7 +114,7 @@ void Viz::init() {
     };
 
     bCasos[0].rect = {5, 280, 220, 36};
-    bCasos[0].txt = "Caso 1: Vacío (N=0)";
+    bCasos[0].txt = "Caso 1: Vacio (N=0)";
     bCasos[0].atajo = "";
     bCasos[0].alClick = [this]{
         cargarCaso(CasoBorde::VACIO);
@@ -340,7 +340,7 @@ void Viz::reiniciar() {
     timerRep = 0.0f;
     pasos.clear();
     res = Tree::Result{};
-    txtDesc = "Presiona [Espacio] o [ ▶ Play ] para iniciar la simulación.";
+    txtDesc = "Presiona [Espacio] o [ Play ] para iniciar la simulacion.";
     colaVis.clear();
     initVis();
 }
@@ -567,7 +567,7 @@ float Viz::easeIO(float t) const {
 }
 
 std::string Viz::strDst(int d) const {
-    if (d == -1) return "\xe2\x88\x9e";
+    if (d == -1) return "inf";
     return std::to_string(d);
 }
 
@@ -666,7 +666,7 @@ void Viz::dibujarCanvas() {
     BeginScissorMode(LEFT_W, NAV_H, CANVAS_W, CANVAS_H);
 
     if (tree.n == 0) {
-        textoC("Árbol Vacío (N = 0)", LEFT_W + CANVAS_W / 2, NAV_H + CANVAS_H / 2, 22, Pal::TEXT_DIM());
+        textoC("Arbol Vacio (N = 0)", LEFT_W + CANVAS_W / 2, NAV_H + CANVAS_H / 2, 22, Pal::TEXT_DIM());
     } else {
         dibujarArbol();
     }
@@ -883,15 +883,15 @@ void Viz::dibTablaDst(Rectangle area) {
 
         Color rowC = hl ? Pal::AMBER() : Pal::TEXT();
         std::string nstr = "v" + std::to_string(i);
-        std::string dstr = "─";
-        std::string pstr = "─";
+        std::string dstr = "-";
+        std::string pstr = "-";
 
         if (iPaso >= 0 && iPaso < (int)pasos.size()) {
             const Paso& s = pasos[iPaso];
             if (i < (int)s.arrDst.size()) dstr = strDst(s.arrDst[i]);
             if (i < (int)s.arrPad.size()) {
                 int p = s.arrPad[i];
-                pstr = (p == -1) ? "─" : ("v" + std::to_string(p));
+                pstr = (p == -1) ? "-" : ("v" + std::to_string(p));
             }
         }
 
@@ -915,11 +915,11 @@ void Viz::dibResumen(Rectangle area) {
             case FaseBFS::BFS1:        fase = "BFS 1"; break;
             case FaseBFS::BFS2:        fase = "BFS 2"; break;
             case FaseBFS::RECONSTRUCT: fase = "Reconstruyendo"; break;
-            case FaseBFS::DONE:        fase = "¡Listo!"; break;
+            case FaseBFS::DONE:        fase = "Listo!"; break;
         }
     }
 
-    std::string eA = "─", eB = "─", diam = "─";
+    std::string eA = "-", eB = "-", diam = "-";
     if (res.ok) {
         eA = "v" + std::to_string(res.extremoA);
         eB = "v" + std::to_string(res.extremoB);
