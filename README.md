@@ -1,11 +1,11 @@
 # Diámetro de un Árbol — CS2023 AED | UTEC 2026-2
 
-> **Proyecto Final 2 – Anima tu Algoritmo o Estructura de Datos**
+> **Proyecto Final 2 - AED**
 > Tema: **Diámetro de un árbol (Doble BFS en O(n))**
 
 ## Descripción
 
-Aplicación gráfica interactiva de escritorio en **C++ con Raylib** que visualiza paso a paso el algoritmo de **Doble BFS** para encontrar el diámetro de un árbol en tiempo **O(n)**. Diseñada para ser usada en vivo mientras se graba con OBS para el video del proyecto.
+Aplicación gráfica interactiva de escritorio en **C++ con Raylib** que visualiza paso a paso el algoritmo de **Doble BFS** para encontrar el diámetro de un árbol en tiempo **O(n)**. Diseñada para ser usada en vivo. 
 
 ## Estructura del repositorio
 
@@ -29,7 +29,7 @@ Proyecto2/
 ## Requisitos
 
 ```bash
-sudo pacman -S raylib cmake      # Arch / EndeavourOS
+sudo pacman -S raylib cmake      # Arch / EndeavourOS (Distro de ambos)
 # ó
 sudo apt install libraylib-dev cmake  # Ubuntu
 ```
