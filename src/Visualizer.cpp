@@ -104,7 +104,7 @@ void Viz::init() {
     bVelMas.atajo = "[+]";
     bVelMas.alClick = [this]{ vel = std::min(3.0f, vel + 0.25f); };
 
-    bPeso.rect = {5, 230, 220, 30};
+    bPeso.rect = {5, 250, 220, 32};
     bPeso.txt = "Alternar Arbol Ponderado";
     bPeso.atajo = "[W]";
     bPeso.alClick = [this]{
@@ -113,7 +113,7 @@ void Viz::init() {
         else          cargarArbol(TipoArbol::SIN_PESO);
     };
 
-    bCasos[0].rect = {5, 280, 220, 36};
+    bCasos[0].rect = {5, 314, 220, 34};
     bCasos[0].txt = "Caso 1: Vacio (N=0)";
     bCasos[0].atajo = "";
     bCasos[0].alClick = [this]{
@@ -121,7 +121,7 @@ void Viz::init() {
         casoAct = CasoBorde::VACIO;
     };
 
-    bCasos[1].rect = {5, 322, 220, 36};
+    bCasos[1].rect = {5, 352, 220, 34};
     bCasos[1].txt = "Caso 2: Un Nodo (N=1)";
     bCasos[1].atajo = "";
     bCasos[1].alClick = [this]{
@@ -129,7 +129,7 @@ void Viz::init() {
         casoAct = CasoBorde::UN_NODO;
     };
 
-    bCasos[2].rect = {5, 364, 220, 36};
+    bCasos[2].rect = {5, 390, 220, 34};
     bCasos[2].txt = "Caso 3: Cadena N=6";
     bCasos[2].atajo = "";
     bCasos[2].alClick = [this]{
@@ -137,7 +137,7 @@ void Viz::init() {
         casoAct = CasoBorde::LINEAL;
     };
 
-    bCasos[3].rect = {5, 406, 220, 36};
+    bCasos[3].rect = {5, 428, 220, 34};
     bCasos[3].txt = "Caso 4: Estrella N=7";
     bCasos[3].atajo = "";
     bCasos[3].alClick = [this]{
@@ -630,18 +630,19 @@ void Viz::dibujarIzq() {
     dibBoton(bReset);
     dibBoton(bVelMen);
     dibBoton(bVelMas);
-    bPeso.activo = modoPeso;
-    dibBoton(bPeso);
 
     {
         std::ostringstream ss;
         ss << std::fixed << std::setprecision(2) << "Velocidad: " << vel << "x";
-        etiqueta(ss.str().c_str(), 10, 232, 11, Pal::AMBER());
+        etiqueta(ss.str().c_str(), 10, 230, 11, Pal::AMBER());
     }
 
+    bPeso.activo = modoPeso;
+    dibBoton(bPeso);
+
     if (tabAct == Tab::EDGE_CASES) {
-        DrawLine(5, 263, LEFT_W - 5, 263, Pal::BORDER());
-        etiqueta("Casos Borde:", 10, 267, 13, Pal::TEXT_DIM());
+        DrawLine(5, 290, LEFT_W - 5, 290, Pal::BORDER());
+        etiqueta("Casos Borde:", 10, 295, 13, Pal::TEXT_DIM());
         for (int i = 0; i < 4; i++) {
             bCasos[i].activo = (casoAct == (CasoBorde)i);
             dibBoton(bCasos[i]);
