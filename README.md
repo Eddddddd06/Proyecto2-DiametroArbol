@@ -12,9 +12,9 @@ Aplicación gráfica interactiva de escritorio en **C++ con Raylib** que visuali
 ```
 Proyecto2/
 ├── src/
-│   ├── Tree.hpp          # Tipos, enums, clase Tree
+│   ├── Tree.h            # Tipos, enums, clase Tree
 │   ├── Tree.cpp          # Doble BFS con grabación de micro-pasos
-│   ├── Visualizer.hpp    # Clase Visualizer (Raylib)
+│   ├── Visualizer.h      # Clase Visualizer (Raylib)
 │   ├── Visualizer.cpp    # Toda la UI gráfica (~1300 líneas)
 │   └── main.cpp          # Punto de entrada
 ├── docs/
